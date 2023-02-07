@@ -38,7 +38,7 @@ public class TestAssignment3 {
         Set<Rectangle<Integer>> setNull = new HashSet<Rectangle<Integer>>();
         setNull.add(null);
         Set<Rectangle<Integer>> setRect =
-                Set.of(Rectangle.of(5, 2, 0, 1));
+                Set.of(Rectangle.of(0, 1, 2, 5));
 
         assertThrows(IllegalArgumentException.class,
                 () -> PlaneMap.from(null));
@@ -70,7 +70,7 @@ public class TestAssignment3 {
         assertThrows(IllegalArgumentException.class,
                 () -> Grid.from(null));
 
-        Grid g = Grid.from(Rectangle.of(3, 1, 2, 4));
+        Grid g = Grid.from(Rectangle.of(2, 4, 1, 3));
         assertEquals(3, g.top());
         assertEquals(1, g.bottom());
         assertEquals(2, g.left());

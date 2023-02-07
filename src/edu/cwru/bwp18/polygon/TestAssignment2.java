@@ -14,7 +14,7 @@ public class TestAssignment2 {
         /* Test Factory Method .of */
         boolean threw = false;
         try {
-            Rectangle<Double> d = Rectangle.of(5., null, 3., 6.);
+            Rectangle<Double> d = Rectangle.of(3., 6., null, 5.);
         }
         catch (IllegalArgumentException e) {
             if (e.getCause() instanceof RectangleException) {
@@ -29,7 +29,7 @@ public class TestAssignment2 {
 
         threw = false;
         try {
-            Rectangle<Double> d = Rectangle.of(5., 3., 6., 3.);
+            Rectangle<Double> d = Rectangle.of(6., 3., 3., 5.);
         }
         catch (IllegalArgumentException e) {
             if (e.getCause() instanceof RectangleException re) {
@@ -48,7 +48,7 @@ public class TestAssignment2 {
 
         Rectangle<Integer> r = null;
         try {
-            r = Rectangle.of(2, 1, 3, 4);
+            r = Rectangle.of(3, 4, 1, 2);
         }
         catch (IllegalArgumentException e) {
             fail("Exception thrown by valid rectangle creation");

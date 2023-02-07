@@ -29,17 +29,18 @@ public final class Rectangle<T extends Comparable<T>> {
 
     /**
      * Factory method to create rectangles with the provided bounds.
-     * @param top generic upper bound
+     *
+     * @param <S>    the Comparable type of the bounds
+     * @param left   generic left bound (must be less than right)
+     * @param right  generic right bound
      * @param bottom generic lower bound (must be less than top)
-     * @param left generic left bound (must be less than right)
-     * @param right generic right bound
+     * @param top    generic upper bound
      * @return a rectangle with the provided bounds
-     * @param <S> the Comparable type of the bounds
      * @throws IllegalArgumentException containing a RectangleException as its
-     *          cause if the bottom/left bounds are greater than the top/right
-     *          bounds (respectively) or any bound is null
+     *                                  cause if the bottom/left bounds are greater than the top/right
+     *                                  bounds (respectively) or any bound is null
      */
-    public static <S extends Comparable<S>> Rectangle<S> of(S top, S bottom, S left, S right) {
+    public static <S extends Comparable<S>> Rectangle<S> of(S left, S right, S bottom, S top) {
         RectangleException.verifyNonNull(top, bottom, left, right);
         RectangleException.verifyBounds(bottom, top);
         RectangleException.verifyBounds(left, right);

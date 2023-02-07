@@ -12,4 +12,5 @@ Decompress the file
 
 Compile all source files with `javac`
 
-Run `TestRectangle.testRectangle` as a JUnit test
+Run `TestAssignment2.testAssignment2`, `TestAssignment3.testPlaneMap`,
+`TestAssignment3.testIndexPair`, and `TestAssignment3.testGrid` as a JUnit tests

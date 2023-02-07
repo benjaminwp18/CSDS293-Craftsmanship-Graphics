@@ -32,6 +32,4 @@ public record IndexPair(int xIndex, int yIndex) implements Comparable<IndexPair>
     IndexPair copy() {
         return new IndexPair(this.xIndex(), this.yIndex());
     }
-
-
 }

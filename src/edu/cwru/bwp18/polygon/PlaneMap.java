@@ -5,7 +5,7 @@ import java.util.*;
 public final class PlaneMap<S> {
 
     // Guaranteed to be non-null
-    private AxisMap<S> x, y;
+    private final AxisMap<S> x, y;
 
     private PlaneMap(AxisMap<S> x, AxisMap<S> y) {
         assert x != null;
@@ -17,6 +17,8 @@ public final class PlaneMap<S> {
 
     public static <S> PlaneMap<S> of(Collection<S> x, Collection<S> y) {
         RectangleException.verifyNonNull(x, y);
+        RectangleException.verifyNonNull(x.toArray());
+        RectangleException.verifyNonNull(y.toArray());
 
         return new PlaneMap<S>(AxisMap.from(x), AxisMap.from(y));
     }

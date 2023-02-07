@@ -7,9 +7,9 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestRectangle {
+public class TestAssignment2 {
     @Test
-    public void testRectangle() {
+    public void testAssignment2() {
 
         /* Test Factory Method .of */
         boolean threw = false;
@@ -80,20 +80,15 @@ public class TestRectangle {
         }
 
         /* Test public & package-private getters */
-        try {
-            assertEquals(r2.top(),    r.top());
-            assertEquals(r2.bottom(), r.bottom());
-            assertEquals(r2.left(),   r.left());
-            assertEquals(r2.right(),  r.right());
+        assertEquals(r2.top(),    r.top());
+        assertEquals(r2.bottom(), r.bottom());
+        assertEquals(r2.left(),   r.left());
+        assertEquals(r2.right(),  r.right());
 
-            assertEquals(r2.getBorder(Direction.TOP),    r.top());
-            assertEquals(r2.getBorder(Direction.BOTTOM), r.bottom());
-            assertEquals(r2.getBorder(Direction.LEFT),   r.left());
-            assertEquals(r2.getBorder(Direction.RIGHT),  r.right());
-        }
-        catch (RectangleException e) {
-            fail("Unexpected null border exception when retrieving border values");
-        }
+        assertEquals(r2.getBorder(Direction.TOP),    r.top());
+        assertEquals(r2.getBorder(Direction.BOTTOM), r.bottom());
+        assertEquals(r2.getBorder(Direction.LEFT),   r.left());
+        assertEquals(r2.getBorder(Direction.RIGHT),  r.right());
 
         EnumMap<Direction, Integer> borders = r.getBorders(Set.of(Direction.TOP, Direction.BOTTOM));
         assertEquals(borders.get(Direction.TOP).intValue(),    2);

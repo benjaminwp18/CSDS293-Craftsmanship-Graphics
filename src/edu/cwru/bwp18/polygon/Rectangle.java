@@ -98,8 +98,8 @@ public final class Rectangle<T extends Comparable<T>> {
      * @return the generic top bound of this rectangle
      * @throws RectangleException if the bound is null
      */
-    public T top() throws RectangleException {
-        RectangleException.verifyNonNull(borders.get(Direction.TOP));
+    public T top() {
+        assert borders.get(Direction.TOP) != null;
 
         return borders.get(Direction.TOP);
     }
@@ -109,8 +109,8 @@ public final class Rectangle<T extends Comparable<T>> {
      * @return the generic bottom bound of this rectangle
      * @throws RectangleException if the bound is null
      */
-    public T bottom() throws RectangleException {
-        RectangleException.verifyNonNull(borders.get(Direction.BOTTOM));
+    public T bottom() {
+        assert borders.get(Direction.BOTTOM) != null;
 
         return borders.get(Direction.BOTTOM);
     }
@@ -120,8 +120,8 @@ public final class Rectangle<T extends Comparable<T>> {
      * @return the generic left bound of this rectangle
      * @throws RectangleException if the bound is null
      */
-    public T left() throws RectangleException {
-        RectangleException.verifyNonNull(borders.get(Direction.LEFT));
+    public T left() {
+        assert borders.get(Direction.LEFT) != null;
 
         return borders.get(Direction.LEFT);
     }
@@ -131,8 +131,8 @@ public final class Rectangle<T extends Comparable<T>> {
      * @return the generic right bound of this rectangle
      * @throws RectangleException if the bound is null
      */
-    public T right() throws RectangleException {
-        RectangleException.verifyNonNull(borders.get(Direction.RIGHT));
+    public T right() {
+        assert borders.get(Direction.RIGHT) != null;
 
         return borders.get(Direction.RIGHT);
     }

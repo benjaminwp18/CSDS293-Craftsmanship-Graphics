@@ -23,8 +23,8 @@ public final class AxisMap<S> {
     }
 
     /**
-     * Generate an AxisMap from the given coordinates. Coordinate order not
-     * necessarily maintained. Null coordinates are illegal.
+     * Generate an AxisMap from the given coordinates.
+     * Null coordinates are illegal.
      * @param coordinates the nonnull coordinates for the new AxisMap
      * @return a new AxisMap with the given coordinates
      * @param <S> the type of a coordinate
@@ -33,7 +33,7 @@ public final class AxisMap<S> {
         assert coordinates != null;
         coordinates.forEach(coord -> {assert coord != null;});
 
-        List<S> coordList = coordinates.stream().toList();
+        List<S> coordList = coordinates.stream().sorted().toList();
         Map<S, Integer> index = new HashMap<>();
 
         IntStream.range(0, coordList.size())

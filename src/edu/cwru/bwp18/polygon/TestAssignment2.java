@@ -7,14 +7,14 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestRectangle {
+public class TestAssignment2 {
     @Test
-    public void testRectangle() {
+    public void testAssignment2() {
 
         /* Test Factory Method .of */
         boolean threw = false;
         try {
-            Rectangle<Double> d = Rectangle.of(5., null, 3., 6.);
+            Rectangle<Double> d = Rectangle.of(3., 6., null, 5.);
         }
         catch (IllegalArgumentException e) {
             if (e.getCause() instanceof RectangleException) {
@@ -29,7 +29,7 @@ public class TestRectangle {
 
         threw = false;
         try {
-            Rectangle<Double> d = Rectangle.of(5., 3., 6., 3.);
+            Rectangle<Double> d = Rectangle.of(6., 3., 3., 5.);
         }
         catch (IllegalArgumentException e) {
             if (e.getCause() instanceof RectangleException re) {
@@ -48,7 +48,7 @@ public class TestRectangle {
 
         Rectangle<Integer> r = null;
         try {
-            r = Rectangle.of(2, 1, 3, 4);
+            r = Rectangle.of(3, 4, 1, 2);
         }
         catch (IllegalArgumentException e) {
             fail("Exception thrown by valid rectangle creation");
@@ -80,20 +80,15 @@ public class TestRectangle {
         }
 
         /* Test public & package-private getters */
-        try {
-            assertEquals(r2.top(),    r.top());
-            assertEquals(r2.bottom(), r.bottom());
-            assertEquals(r2.left(),   r.left());
-            assertEquals(r2.right(),  r.right());
+        assertEquals(r2.top(),    r.top());
+        assertEquals(r2.bottom(), r.bottom());
+        assertEquals(r2.left(),   r.left());
+        assertEquals(r2.right(),  r.right());
 
-            assertEquals(r2.getBorder(Direction.TOP),    r.top());
-            assertEquals(r2.getBorder(Direction.BOTTOM), r.bottom());
-            assertEquals(r2.getBorder(Direction.LEFT),   r.left());
-            assertEquals(r2.getBorder(Direction.RIGHT),  r.right());
-        }
-        catch (RectangleException e) {
-            fail("Unexpected null border exception when retrieving border values");
-        }
+        assertEquals(r2.getBorder(Direction.TOP),    r.top());
+        assertEquals(r2.getBorder(Direction.BOTTOM), r.bottom());
+        assertEquals(r2.getBorder(Direction.LEFT),   r.left());
+        assertEquals(r2.getBorder(Direction.RIGHT),  r.right());
 
         EnumMap<Direction, Integer> borders = r.getBorders(Set.of(Direction.TOP, Direction.BOTTOM));
         assertEquals(borders.get(Direction.TOP).intValue(),    2);

@@ -15,6 +15,7 @@ enum Direction {
 
     static final Set<Direction> HORIZONTAL_BOUNDS = Set.of(LEFT, RIGHT);
     static final Set<Direction> VERTICAL_BOUNDS   = Set.of(BOTTOM, TOP);
+    static final Set<Direction> ALL_BOUNDS        = Set.of(LEFT, RIGHT, BOTTOM, TOP);
 
     private final boolean horizontal, increment;
 
@@ -26,5 +27,13 @@ enum Direction {
     Direction(boolean horizontal, boolean increment) {
         this.horizontal = horizontal;
         this.increment  = increment;
+    }
+
+    boolean isHorizontal() {
+        return horizontal;
+    }
+
+    int getIncrementValue() {
+        return increment ? 1 : -1;
     }
 }

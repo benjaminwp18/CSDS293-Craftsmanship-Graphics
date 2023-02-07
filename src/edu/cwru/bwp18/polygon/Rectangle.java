@@ -29,17 +29,18 @@ public final class Rectangle<T extends Comparable<T>> {
 
     /**
      * Factory method to create rectangles with the provided bounds.
-     * @param top generic upper bound
+     *
+     * @param <S>    the Comparable type of the bounds
+     * @param left   generic left bound (must be less than right)
+     * @param right  generic right bound
      * @param bottom generic lower bound (must be less than top)
-     * @param left generic left bound (must be less than right)
-     * @param right generic right bound
+     * @param top    generic upper bound
      * @return a rectangle with the provided bounds
-     * @param <S> the Comparable type of the bounds
      * @throws IllegalArgumentException containing a RectangleException as its
-     *          cause if the bottom/left bounds are greater than the top/right
-     *          bounds (respectively) or any bound is null
+     *                                  cause if the bottom/left bounds are greater than the top/right
+     *                                  bounds (respectively) or any bound is null
      */
-    public static <S extends Comparable<S>> Rectangle<S> of(S top, S bottom, S left, S right) {
+    public static <S extends Comparable<S>> Rectangle<S> of(S left, S right, S bottom, S top) {
         RectangleException.verifyNonNull(top, bottom, left, right);
         RectangleException.verifyBounds(bottom, top);
         RectangleException.verifyBounds(left, right);
@@ -98,8 +99,8 @@ public final class Rectangle<T extends Comparable<T>> {
      * @return the generic top bound of this rectangle
      * @throws RectangleException if the bound is null
      */
-    public T top() throws RectangleException {
-        RectangleException.verifyNonNull(borders.get(Direction.TOP));
+    public T top() {
+        assert borders.get(Direction.TOP) != null;
 
         return borders.get(Direction.TOP);
     }
@@ -109,8 +110,8 @@ public final class Rectangle<T extends Comparable<T>> {
      * @return the generic bottom bound of this rectangle
      * @throws RectangleException if the bound is null
      */
-    public T bottom() throws RectangleException {
-        RectangleException.verifyNonNull(borders.get(Direction.BOTTOM));
+    public T bottom() {
+        assert borders.get(Direction.BOTTOM) != null;
 
         return borders.get(Direction.BOTTOM);
     }
@@ -120,8 +121,8 @@ public final class Rectangle<T extends Comparable<T>> {
      * @return the generic left bound of this rectangle
      * @throws RectangleException if the bound is null
      */
-    public T left() throws RectangleException {
-        RectangleException.verifyNonNull(borders.get(Direction.LEFT));
+    public T left() {
+        assert borders.get(Direction.LEFT) != null;
 
         return borders.get(Direction.LEFT);
     }
@@ -131,8 +132,8 @@ public final class Rectangle<T extends Comparable<T>> {
      * @return the generic right bound of this rectangle
      * @throws RectangleException if the bound is null
      */
-    public T right() throws RectangleException {
-        RectangleException.verifyNonNull(borders.get(Direction.RIGHT));
+    public T right() {
+        assert borders.get(Direction.RIGHT) != null;
 
         return borders.get(Direction.RIGHT);
     }

@@ -3,7 +3,7 @@ package edu.cwru.bwp18.polygon;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public final class AxisMap<S> {
+public final class AxisMap<S extends Comparable<S>> {
     /**
      * Map of coordinates to their indices.
      * Guaranteed to be non-null and to contain no null values.
@@ -29,7 +29,7 @@ public final class AxisMap<S> {
      * @return a new AxisMap with the given coordinates
      * @param <S> the type of a coordinate
      */
-    static <S> AxisMap<S> from(Collection<S> coordinates) {
+    static <S extends Comparable<S>> AxisMap<S> from(Collection<S> coordinates) {
         assert coordinates != null;
         coordinates.forEach(coord -> {assert coord != null;});
 

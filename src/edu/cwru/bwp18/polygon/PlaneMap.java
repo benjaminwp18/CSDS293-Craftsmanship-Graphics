@@ -2,7 +2,7 @@ package edu.cwru.bwp18.polygon;
 
 import java.util.*;
 
-public final class PlaneMap<S> {
+public final class PlaneMap<S extends Comparable<S>> {
 
     // Guaranteed to be non-null
     private final AxisMap<S> x, y;
@@ -15,7 +15,7 @@ public final class PlaneMap<S> {
         this.y = y;
     }
 
-    public static <S> PlaneMap<S> of(Collection<S> x, Collection<S> y) {
+    public static <S extends Comparable<S>> PlaneMap<S> of(Collection<S> x, Collection<S> y) {
         RectangleException.verifyNonNull(x, y);
         RectangleException.verifyNonNull(x.toArray());
         RectangleException.verifyNonNull(y.toArray());

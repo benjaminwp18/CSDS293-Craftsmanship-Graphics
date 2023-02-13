@@ -2,7 +2,6 @@ package edu.cwru.bwp18.polygon;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 public final class Grid implements Iterable<IndexPair> {
 

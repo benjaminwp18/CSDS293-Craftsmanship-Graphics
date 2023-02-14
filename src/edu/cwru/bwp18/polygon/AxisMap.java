@@ -33,7 +33,7 @@ public final class AxisMap<S extends Comparable<S>> {
         assert coordinates != null;
         coordinates.forEach(coord -> {assert coord != null;});
 
-        List<S> coordList = coordinates.stream().sorted().toList();
+        List<S> coordList = coordinates.stream().sorted().distinct().toList();
         Map<S, Integer> index = new HashMap<>();
 
         IntStream.range(0, coordList.size())

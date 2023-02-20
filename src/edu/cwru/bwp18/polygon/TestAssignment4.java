@@ -31,6 +31,7 @@ public class TestAssignment4 {
 
         Set<Rectangle<Integer>> rects = rectangleGroup.getRectangles();
         assertTrue(rects.containsAll(set));
+        assertTrue(set.containsAll(rects));
         assertThrows(UnsupportedOperationException.class,
                 () -> rects.add(null));
 
@@ -93,6 +94,9 @@ public class TestAssignment4 {
 
         for (int r = 0; r < expectedGrid.size(); r++) {
             for (int c = 0; c < expectedGrid.get(r).size(); c++) {
+                // We don't put 0s in our results, as per the assignment
+                if (expectedGrid.get(r).get(c) == 0) continue;
+
                 assertEquals(expectedGrid.get(r).get(c),
                         matrixGrid.get(new IndexPair(c, r)));
             }

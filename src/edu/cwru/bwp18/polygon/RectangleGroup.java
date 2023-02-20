@@ -1,9 +1,8 @@
 package edu.cwru.bwp18.polygon;
 
 import java.util.*;
-import java.util.function.Supplier;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public final class RectangleGroup<T extends Comparable<T>> {
     private final Set<Rectangle<T>> rectangles;
@@ -38,8 +37,8 @@ public final class RectangleGroup<T extends Comparable<T>> {
      * @throws IllegalArgumentException if rectangles is null or contains null
      *                                  elements
      */
-    static <S extends Comparable<S>> RectangleGroup<S> from(
-            Set<Rectangle<S>> rectangles) {
+    public static <S extends Comparable<S>> RectangleGroup<S>
+    from(Set<Rectangle<S>> rectangles) {
         RectangleException.verifyNonNull(rectangles);
         RectangleException.verifyNonNull(rectangles.toArray());
 
@@ -63,18 +62,15 @@ public final class RectangleGroup<T extends Comparable<T>> {
      * @return a matrix grid from IndexPairs to Longs representing the number
      * of overlapping rectangles at each point
      */
-    private static <S extends Comparable<S>> NavigableMap<IndexPair, Long> createMatrixGrid(
-            Set<Rectangle<S>> rectangles, PlaneMap<S> map) {
+    private static <S extends Comparable<S>> NavigableMap<IndexPair, Long>
+    createMatrixGrid(Set<Rectangle<S>> rectangles, PlaneMap<S> map) {
 
-        // Count # appearances of every discrete point in all rectangles
         NavigableMap<IndexPair, Long> overlapsGrid = rectangles.stream()
-                // Semantic coupling: we can use Optional::get without checking
-                //  here b/c map must contain all rect bounds
                 .flatMap(rect -> streamPairsInBounds(
-                        map.yIndexOf(rect.bottom()).get(),
-                        map.yIndexOf(rect.top()).get(),
                         map.xIndexOf(rect.left()).get(),
-                        map.xIndexOf(rect.right()).get()
+                        map.xIndexOf(rect.right()).get(),
+                        map.yIndexOf(rect.bottom()).get(),
+                        map.yIndexOf(rect.top()).get()
                 ))
                 .collect(
                         TreeMap<IndexPair, Long>::new,
@@ -83,37 +79,21 @@ public final class RectangleGroup<T extends Comparable<T>> {
                         TreeMap::putAll
                 );
 
-        // Init the grid with 0s
-        NavigableMap<IndexPair, Long> matrixGrid =
-                streamPairsInBounds(0, map.ySize(), 0, map.xSize())
-                        .collect(
-                                TreeMap<IndexPair, Long>::new,
-                                (grid, pair) -> grid.put(pair, 0L),
-                                TreeMap::putAll
-                        );
-
-        // Replace 0s with overlap counts where applicable
-        matrixGrid.putAll(overlapsGrid);
-
-        return matrixGrid;
+        return overlapsGrid;
     }
 
     /**
-     * Generates a stream of IndexPairs, one for each point in the provided
-     * bounds.
+     * Generates a stream of IndexPairs using Grid, one for each point in the
+     * provided bounds.
      */
     private static Stream<IndexPair> streamPairsInBounds(
-            Integer bottomInclusive, Integer topExclusive,
-            Integer leftInclusive, Integer rightExclusive) {
-        Stream<Integer> xStream =
-                IntStream.range(leftInclusive, rightExclusive).boxed();
+            Integer leftInclusive, Integer rightExclusive,
+            Integer bottomInclusive, Integer topExclusive) {
 
-        // Must use a supplier for nested streams b/c streams are single-use
-        Supplier<Stream<Integer>> yStreamSupplier =
-                () -> IntStream.range(bottomInclusive, topExclusive).boxed();
-
-        return xStream.flatMap(
-                x -> yStreamSupplier.get().map(y -> new IndexPair(x, y)));
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
+                Grid.from(Rectangle.of(leftInclusive, rightExclusive,
+                        bottomInclusive, topExclusive
+                )).iterator(), 0), false);
     }
 
     public Set<Rectangle<T>> getRectangles() {

@@ -19,12 +19,12 @@ public final class RectangleGroup<T extends Comparable<T>> {
     private RectangleGroup(Set<Rectangle<T>> rectangles, PlaneMap<T> map,
             NavigableMap<IndexPair, Long> matrixGrid, boolean isOverlapping) {
         assert rectangles != null;
-        assert map != null;
+        assert map        != null;
         assert matrixGrid != null;
 
-        this.rectangles = rectangles;
-        this.map = map;
-        this.matrixGrid = matrixGrid;
+        this.rectangles    = rectangles;
+        this.map           = map;
+        this.matrixGrid    = matrixGrid;
         this.isOverlapping = isOverlapping;
     }
 

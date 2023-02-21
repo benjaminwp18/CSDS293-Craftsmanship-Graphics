@@ -14,4 +14,5 @@ Compile all source files with `javac`
 
 Run `TestAssignment2.testAssignment2`, `TestAssignment3.testPlaneMap`,
 `TestAssignment3.testIndexPair`, `TestAssignment3.testGrid`, and
-`TestAssignment4.testRectangleGroup` as a JUnit tests
+`TestAssignment4.testRectangleGroup`,
+`TestAssignment5.testRectangleGroup` as a JUnit tests

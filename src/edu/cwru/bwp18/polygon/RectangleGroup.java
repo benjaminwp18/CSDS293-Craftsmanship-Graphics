@@ -1,14 +1,16 @@
 package edu.cwru.bwp18.polygon;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public final class RectangleGroup<T extends Comparable<T>> {
+final class RectangleGroup<T extends Comparable<T>> {
     private final Set<Rectangle<T>> rectangles;
     private final PlaneMap<T> map;
     private final NavigableMap<IndexPair, Long> matrixGrid;
     private final boolean isOverlapping;
+    private final boolean isConnected;
 
     /**
      * Construct a RectangleGroup from the given rectangles.
@@ -17,7 +19,8 @@ public final class RectangleGroup<T extends Comparable<T>> {
      * @param rectangles the Set of Rectangles to group
      */
     private RectangleGroup(Set<Rectangle<T>> rectangles, PlaneMap<T> map,
-            NavigableMap<IndexPair, Long> matrixGrid, boolean isOverlapping) {
+            NavigableMap<IndexPair, Long> matrixGrid,
+            boolean isOverlapping, boolean isConnected) {
         assert rectangles != null;
         assert map        != null;
         assert matrixGrid != null;
@@ -26,6 +29,7 @@ public final class RectangleGroup<T extends Comparable<T>> {
         this.map           = map;
         this.matrixGrid    = matrixGrid;
         this.isOverlapping = isOverlapping;
+        this.isConnected   = isConnected;
     }
 
     /**
@@ -47,9 +51,33 @@ public final class RectangleGroup<T extends Comparable<T>> {
                 createMatrixGrid(rectangles, map);
         boolean isOverlapping = matrixGrid.values().stream()
                 .anyMatch(numRects -> numRects > 1);
+        boolean isConnected = getConnectedPairs(matrixGrid.firstKey(),
+                new HashSet<>(), matrixGrid).containsAll(matrixGrid.keySet());
 
         return new RectangleGroup<S>(rectangles, map, matrixGrid,
-                isOverlapping);
+                isOverlapping, isConnected);
+    }
+
+    private static Set<IndexPair> getConnectedPairs(IndexPair start,
+            Set<IndexPair> connectedPairs, NavigableMap<IndexPair, Long> matrixGrid) {
+        // Duplicate connectedPairs so we don't store intermediates in it
+        Set<IndexPair> newConnectedPairs = new HashSet<>(connectedPairs);
+
+        newConnectedPairs.add(start);
+
+        final Set<IndexPair> finalConnectedPairs = newConnectedPairs;
+        Set<IndexPair> nextPairs = Direction.ALL_BOUNDS.stream()
+                .map(start::increment)
+                .filter(matrixGrid::containsKey)
+                .filter(next -> !finalConnectedPairs.contains(next))
+                .collect(Collectors.toSet());
+
+        for (IndexPair next : nextPairs) {
+            newConnectedPairs =
+                    getConnectedPairs(next, newConnectedPairs, matrixGrid);
+        }
+
+        return newConnectedPairs;
     }
 
     /**
@@ -65,7 +93,7 @@ public final class RectangleGroup<T extends Comparable<T>> {
     private static <S extends Comparable<S>> NavigableMap<IndexPair, Long>
     createMatrixGrid(Set<Rectangle<S>> rectangles, PlaneMap<S> map) {
 
-        NavigableMap<IndexPair, Long> overlapsGrid = rectangles.stream()
+        return rectangles.stream()
                 .flatMap(rect -> streamPairsInBounds(
                         map.xIndexOf(rect.left()).get(),
                         map.xIndexOf(rect.right()).get(),
@@ -78,8 +106,6 @@ public final class RectangleGroup<T extends Comparable<T>> {
                                 grid.put(pair, grid.getOrDefault(pair, 0L) + 1),
                         TreeMap::putAll
                 );
-
-        return overlapsGrid;
     }
 
     /**
@@ -91,7 +117,8 @@ public final class RectangleGroup<T extends Comparable<T>> {
             Integer bottomInclusive, Integer topExclusive) {
 
         return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
-                Grid.from(Rectangle.of(leftInclusive, rightExclusive,
+                Grid.from(Rectangle.of(
+                        leftInclusive, rightExclusive,
                         bottomInclusive, topExclusive
                 )).iterator(), 0), false);
     }
@@ -110,5 +137,9 @@ public final class RectangleGroup<T extends Comparable<T>> {
 
     public NavigableMap<IndexPair, Long> getMatrixGrid() {
         return Collections.unmodifiableNavigableMap(matrixGrid);
+    }
+
+    boolean isConnected() {
+        return isConnected;
     }
 }

@@ -51,33 +51,27 @@ final class RectangleGroup<T extends Comparable<T>> {
                 createMatrixGrid(rectangles, map);
         boolean isOverlapping = matrixGrid.values().stream()
                 .anyMatch(numRects -> numRects > 1);
-        boolean isConnected = getConnectedPairs(matrixGrid.firstKey(),
-                new HashSet<>(), matrixGrid).containsAll(matrixGrid.keySet());
+
+        Set<IndexPair> connectedPairs = new HashSet<>();
+        findConnectedPairs(matrixGrid.firstKey(),
+                matrixGrid, connectedPairs);
+        boolean isConnected = connectedPairs.containsAll(matrixGrid.keySet());
 
         return new RectangleGroup<S>(rectangles, map, matrixGrid,
                 isOverlapping, isConnected);
     }
 
-    private static Set<IndexPair> getConnectedPairs(IndexPair start,
-            Set<IndexPair> connectedPairs, NavigableMap<IndexPair, Long> matrixGrid) {
-        // Duplicate connectedPairs so we don't store intermediates in it
-        Set<IndexPair> newConnectedPairs = new HashSet<>(connectedPairs);
+    private static void findConnectedPairs(IndexPair start,
+            NavigableMap<IndexPair, Long> matrixGrid,
+            Set<IndexPair> connectedPairs) {
 
-        newConnectedPairs.add(start);
-
-        final Set<IndexPair> finalConnectedPairs = newConnectedPairs;
-        Set<IndexPair> nextPairs = Direction.ALL_BOUNDS.stream()
+        connectedPairs.add(start);
+        Direction.ALL_BOUNDS.stream()
                 .map(start::increment)
                 .filter(matrixGrid::containsKey)
-                .filter(next -> !finalConnectedPairs.contains(next))
-                .collect(Collectors.toSet());
-
-        for (IndexPair next : nextPairs) {
-            newConnectedPairs =
-                    getConnectedPairs(next, newConnectedPairs, matrixGrid);
-        }
-
-        return newConnectedPairs;
+                .filter(next -> !connectedPairs.contains(next))
+                .forEach(next ->
+                        findConnectedPairs(next, matrixGrid, connectedPairs));
     }
 
     /**
